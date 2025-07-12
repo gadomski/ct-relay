@@ -1,10 +1,11 @@
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import Map from "./components/map";
 import Sidebar from "./components/sidebar";
+import { LightMode } from "./components/ui/color-mode";
 
 export default function App() {
   return (
-    <>
+    <LightMode>
       <SimpleGrid columns={4}>
         <GridItem shadow={"inset"}>
           <Sidebar></Sidebar>
@@ -13,6 +14,6 @@ export default function App() {
           <Map></Map>
         </GridItem>
       </SimpleGrid>
-    </>
+    </LightMode>
   );
 }
