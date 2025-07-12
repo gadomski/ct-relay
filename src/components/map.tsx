@@ -37,7 +37,11 @@ export default function Map() {
       }}
     >
       <Source data={locations} type="geojson">
-        <Layer id="locations" type={"circle"}></Layer>
+        <Layer
+          id="locations"
+          type={"circle"}
+          paint={{ "circle-radius": 4 }}
+        ></Layer>
       </Source>
       <Source data={coloradoTrail as FeatureCollection} type="geojson">
         <Layer id="coloradoTrail" type={"line"}></Layer>
