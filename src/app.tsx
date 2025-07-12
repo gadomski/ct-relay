@@ -21,18 +21,18 @@ export default function App() {
                 fontWeight="bold"
                 bg="green.emphasized"
                 color="green.fg"
-                px="0.5"
+                p="1"
               >
-                Bex
+                Bex 🚴‍♀️
               </Span>{" "}
               and{" "}
               <Span
                 fontWeight={"bold"}
                 bg="blue.emphasized"
                 color="blue.fg"
-                px="0.5"
+                p="1"
               >
-                Kelly
+                Kelly 🏃‍♀️
               </Span>
             </Text>
           </Stack>

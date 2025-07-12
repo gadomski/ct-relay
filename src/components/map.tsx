@@ -1,6 +1,6 @@
 import type { FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   Layer,
   Map as MaplibreMap,
@@ -14,7 +14,7 @@ export default function Map() {
   const mapRef = useRef<MapRef>(null);
   const locations = useLocations();
 
-  useEffect(() => {}, [locations]);
+  console.log(locations);
 
   return (
     <MaplibreMap
@@ -40,7 +40,18 @@ export default function Map() {
         <Layer
           id="locations"
           type={"circle"}
-          paint={{ "circle-radius": 4 }}
+          paint={{
+            "circle-radius": 6,
+            "circle-color": [
+              "match",
+              ["get", "person"],
+              "Bex",
+              "#17A34A",
+              "Kelly",
+              "#2463EB",
+              "black",
+            ],
+          }}
         ></Layer>
       </Source>
       <Source data={coloradoTrail as FeatureCollection} type="geojson">
