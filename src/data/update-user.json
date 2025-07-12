@@ -1,5 +1,5 @@
 {
-    "C": "s-0,2DC6281D7",
+    "C": "s-0,2DC6447F1",
     "M": [
         {
             "H": "MapHub",
@@ -15,6 +15,22 @@
                     "LastName": "Howard",
                     "TrackingStatus": true,
                     "Locations": [
+                        {
+                            "L": 39.33775,
+                            "N": -105.414633,
+                            "A": 2666.02,
+                            "G": 2.0010,
+                            "C": 10,
+                            "D": "2025-07-12T20:51:45Z",
+                            "S": 6,
+                            "P": false,
+                            "E": 0,
+                            "T": 24737485,
+                            "M": 515217531,
+                            "X": "",
+                            "ET": 17,
+                            "H": 0
+                        },
                         {
                             "L": 39.338156,
                             "N": -105.40133,
@@ -317,7 +333,7 @@
                     ],
                     "ColorCode": "#0055FF",
                     "GroupID": 513697,
-                    "LastSeenTime": "2025-07-12T20:21:45Z",
+                    "LastSeenTime": "2025-07-12T20:51:45Z",
                     "CanSendToDevice": true,
                     "EnableLocate": true,
                     "EnableMessage": true,
