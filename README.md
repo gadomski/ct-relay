@@ -1,3 +1,3 @@
-# CT relay
+# A Colorado Trail relay
 
-Kelly and Bex do the CT!
+Brought to you by Bex 🚴‍♀️ and Kelly 🏃‍♀️.
