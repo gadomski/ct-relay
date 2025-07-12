@@ -27,8 +27,8 @@ export default function Map() {
       }}
       mapStyle={"https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"}
       style={{
-        height: "100dvh",
-        width: "100dvw",
+        height: "100%",
+        width: "100%",
       }}
       onLoad={() => {
         mapRef.current?.fitBounds([-108.03876, 37.33136, -105.09369, 39.5515], {
