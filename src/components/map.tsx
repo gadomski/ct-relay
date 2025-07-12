@@ -9,9 +9,15 @@ import {
 } from "react-map-gl/maplibre";
 import coloradoTrail from "../data/colorado-trail.json";
 import useLocations from "../hooks/locations";
+import { useColorModeValue } from "./ui/color-mode";
 
 export default function Map() {
   const mapRef = useRef<MapRef>(null);
+  const mapStyle = useColorModeValue(
+    "positron-gl-style",
+    "dark-matter-gl-style"
+  );
+  const lineColor = useColorModeValue("black", "white");
   const locations = useLocations();
 
   return (
@@ -23,7 +29,7 @@ export default function Map() {
         latitude: 38,
         zoom: 4,
       }}
-      mapStyle={"https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"}
+      mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
       style={{
         height: "100%",
         width: "100%",
@@ -53,7 +59,11 @@ export default function Map() {
         ></Layer>
       </Source>
       <Source data={coloradoTrail as FeatureCollection} type="geojson">
-        <Layer id="coloradoTrail" type={"line"}></Layer>
+        <Layer
+          id="coloradoTrail"
+          type={"line"}
+          paint={{ "line-color": lineColor }}
+        ></Layer>
       </Source>
     </MaplibreMap>
   );

@@ -1,6 +1,7 @@
 import { Button, Heading, HStack, Span, Stack, Text } from "@chakra-ui/react";
 import { LuExternalLink } from "react-icons/lu";
 import useLocations from "../hooks/locations";
+import { ColorModeButton } from "./ui/color-mode";
 
 export default function Sidebar() {
   const locations = useLocations();
@@ -27,6 +28,7 @@ export default function Sidebar() {
             Live tracking <LuExternalLink></LuExternalLink>
           </a>
         </Button>
+        <ColorModeButton></ColorModeButton>
       </HStack>
       <Text fontSize={"sm"} fontWeight={"light"}>
         These data were last updated{" "}
