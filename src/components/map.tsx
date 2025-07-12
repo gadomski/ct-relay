@@ -1,12 +1,17 @@
 import type { FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
-import { Layer, Map as MaplibreMap, Source } from "react-map-gl/maplibre";
+import {
+  Layer,
+  Map as MaplibreMap,
+  type MapRef,
+  Source,
+} from "react-map-gl/maplibre";
 import coloradoTrail from "../data/colorado-trail.json";
 import useLocations from "../hooks/locations";
 
 export default function Map() {
-  const mapRef = useRef(null);
+  const mapRef = useRef<MapRef>(null);
   const locations = useLocations();
 
   useEffect(() => {}, [locations]);
@@ -16,14 +21,19 @@ export default function Map() {
       id="map"
       ref={mapRef}
       initialViewState={{
-        longitude: 0,
-        latitude: 0,
-        zoom: 1,
+        longitude: -106,
+        latitude: 38,
+        zoom: 4,
       }}
       mapStyle={"https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"}
       style={{
         height: "100dvh",
         width: "100dvw",
+      }}
+      onLoad={() => {
+        mapRef.current?.fitBounds([-108.03876, 37.33136, -105.09369, 39.5515], {
+          padding: 20,
+        });
       }}
     >
       <Source data={locations} type="geojson">
