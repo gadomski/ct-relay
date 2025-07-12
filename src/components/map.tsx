@@ -14,8 +14,6 @@ export default function Map() {
   const mapRef = useRef<MapRef>(null);
   const locations = useLocations();
 
-  console.log(locations);
-
   return (
     <MaplibreMap
       id="map"

@@ -12,8 +12,10 @@ export default function useLocations(): FeatureCollection {
     features: updateUser.M.flatMap((payload) =>
       payload.A.flatMap((payload) =>
         payload.Locations.map((location) => {
+          const datetime = new Date(location.D);
           return point([location.N, location.L], {
-            person: getActivePerson(new Date(location.D)),
+            person: getActivePerson(datetime),
+            datetime,
           });
         })
       )
