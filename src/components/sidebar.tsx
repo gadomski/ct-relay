@@ -1,14 +1,8 @@
-import { Checkbox, Heading, Span, Stack, Text } from "@chakra-ui/react";
+import { Heading, Span, Stack, Text } from "@chakra-ui/react";
 
-export default function Sidebar({
-  showSegmentDetails,
-  setShowSegmentDetails,
-}: {
-  showSegmentDetails: boolean;
-  setShowSegmentDetails: (showSegmentDetails: boolean) => void;
-}) {
+export default function Sidebar() {
   return (
-    <Stack px={4} pt={8} gap={4}>
+    <Stack px={4} pt={6} gap={4}>
       <Heading>
         <Span fontWeight="bold" bg="green.emphasized" color="green.fg" p="1">
           Bex 🚴‍♀️
@@ -17,19 +11,11 @@ export default function Sidebar({
         <Span fontWeight={"bold"} bg="blue.emphasized" color="blue.fg" p="1">
           Kelly 🏃‍♀️
         </Span>{" "}
-        do a <abbr title="Colorado Trail">CT</abbr> relay
+        relay the <abbr title="Colorado Trail">CT</abbr>
       </Heading>
       <Text fontWeight={"lighter"} fontSize={"sm"}>
         Summer 2025
       </Text>
-      <Checkbox.Root
-        checked={showSegmentDetails}
-        onCheckedChange={(e) => setShowSegmentDetails(!!e.checked)}
-      >
-        <Checkbox.HiddenInput></Checkbox.HiddenInput>
-        <Checkbox.Label>Show segment details?</Checkbox.Label>
-        <Checkbox.Control></Checkbox.Control>
-      </Checkbox.Root>
     </Stack>
   );
 }

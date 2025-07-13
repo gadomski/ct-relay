@@ -1,38 +1,15 @@
-import { featureCollection, point } from "@turf/turf";
-import type { FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useRef } from "react";
-import {
-  Layer,
-  Map as MaplibreMap,
-  Source,
-  type MapRef,
-} from "react-map-gl/maplibre";
-import coloradoTrail from "../data/colorado-trail.json";
-import useLocations from "../hooks/locations";
-import useSegmentPoints from "../hooks/segment-points";
+import { Map as MaplibreMap, type MapRef } from "react-map-gl/maplibre";
+import ColoradoTrail from "./colorado-trail";
+import LastSeen from "./last-seen";
 import { useColorModeValue } from "./ui/color-mode";
 
-export default function Map({
-  showSegmentDetails,
-}: {
-  showSegmentDetails: boolean;
-}) {
+export default function Map() {
   const mapRef = useRef<MapRef>(null);
   const mapStyle = useColorModeValue(
     "positron-gl-style",
     "dark-matter-gl-style"
-  );
-  const {
-    centers: segmentCenters,
-    starts: segmentStarts,
-    ends: segmentEnds,
-  } = useSegmentPoints();
-  const locations = useLocations().map((location) =>
-    point([location.longitude, location.latitude], {
-      person: location.person,
-      datetime: location.datetime,
-    })
   );
 
   return (
@@ -46,75 +23,10 @@ export default function Map({
         },
       }}
       mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
-      interactiveLayerIds={["colorado-trail"]}
+      interactiveLayerIds={["last-seen-circle"]}
     >
-      <Source data={coloradoTrail as FeatureCollection} type="geojson">
-        <Layer
-          id="colorado-trail"
-          type="line"
-          paint={{ "line-width": 1 }}
-        ></Layer>
-      </Source>
-      <Source data={segmentStarts} type="geojson">
-        <Layer
-          id="segment-starts"
-          type="circle"
-          layout={{ visibility: showSegmentDetails ? "visible" : "none" }}
-          paint={{
-            "circle-radius": 2,
-          }}
-        ></Layer>
-      </Source>
-      <Source data={segmentEnds} type="geojson">
-        <Layer
-          id="segment-ends"
-          type="circle"
-          layout={{ visibility: showSegmentDetails ? "visible" : "none" }}
-          paint={{
-            "circle-radius": 2,
-          }}
-        ></Layer>
-      </Source>
-      <Source data={featureCollection(locations)} type="geojson">
-        <Layer
-          id="locations"
-          type="circle"
-          paint={{
-            "circle-radius": 6,
-            "circle-color": [
-              "match",
-              ["get", "person"],
-              "Bex",
-              "#17A34A",
-              "Kelly",
-              "#2463EB",
-              "black",
-            ],
-          }}
-        ></Layer>
-      </Source>
-      <Source data={segmentCenters} type="geojson">
-        <Layer
-          id="segment-centers"
-          type="circle"
-          layout={{ visibility: showSegmentDetails ? "visible" : "none" }}
-          paint={{
-            "circle-radius": 8,
-            "circle-stroke-width": 2,
-            "circle-stroke-color": "black",
-            "circle-color": "white",
-          }}
-        ></Layer>
-        <Layer
-          id="segment-centers-numbers"
-          type="symbol"
-          layout={{
-            "text-field": ["get", "segment"],
-            "text-size": 8,
-            visibility: showSegmentDetails ? "visible" : "none",
-          }}
-        ></Layer>
-      </Source>
+      <ColoradoTrail></ColoradoTrail>
+      <LastSeen></LastSeen>
     </MaplibreMap>
   );
 }
