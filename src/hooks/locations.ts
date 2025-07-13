@@ -1,46 +1,32 @@
-import { point } from "@turf/turf";
-import type { FeatureCollection } from "geojson";
 import rawTransitions from "../data/transitions.json";
-import rawUpdateUser from "../data/update-user.json";
-import type { Transition } from "../types/custom";
-import type { Message, UpdateUser } from "../types/garmin";
+import data from "../data/update-user.json";
 
-export default function useLocations(): FeatureCollection {
-  const updateUser: Message<UpdateUser> = rawUpdateUser;
-  return {
-    type: "FeatureCollection",
-    features: updateUser.M.flatMap((payload) =>
-      payload.A.flatMap((payload) =>
-        payload.Locations.map((location) => {
-          const datetime = new Date(location.D);
-          return point([location.N, location.L], {
-            person: getActivePerson(datetime),
-            datetime,
-          });
-        })
-      )
-    ),
-  };
-}
-
-function getActivePerson(datetime: Date) {
-  const transitions: Transition[] = rawTransitions.map((transition) => {
-    return {
-      datetime: new Date(transition.datetime),
-      person: transition.person as "Bex" | "Kelly",
-    };
+export default function useLocations() {
+  const transitions = rawTransitions.map((transition) => {
+    return { ...transition, datetime: new Date(transition.datetime) };
   });
-  const lastTransition = transitions.find((transition, index) => {
-    if (index + 1 >= transitions.length) {
-      return true;
-    } else if (
-      transition.datetime <= datetime &&
-      datetime <= transitions[index + 1].datetime
-    ) {
-      return true;
-    } else {
-      return false;
+  const getPerson = (datetime: Date) => {
+    for (let index = 0; index < transitions.length - 1; index++) {
+      if (
+        datetime >= transitions[index].datetime &&
+        datetime <= transitions[index + 1].datetime
+      ) {
+        return transitions[index].person;
+      }
+      return transitions[transitions.length - 1].person;
     }
-  });
-  return lastTransition?.person;
+  };
+  return data.M.flatMap((message) =>
+    message.A.flatMap((message) =>
+      message.Locations.map((location) => {
+        const datetime = new Date(location.D);
+        return {
+          latitude: location.L,
+          longitude: location.N,
+          datetime,
+          person: getPerson(datetime),
+        };
+      })
+    )
+  );
 }

@@ -1,39 +1,35 @@
-import { Button, Heading, HStack, Span, Stack, Text } from "@chakra-ui/react";
-import { LuExternalLink } from "react-icons/lu";
-import useLocations from "../hooks/locations";
-import { ColorModeButton } from "./ui/color-mode";
+import { Checkbox, Heading, Span, Stack, Text } from "@chakra-ui/react";
 
-export default function Sidebar() {
-  const locations = useLocations();
-  locations.features.sort(
-    (a, b) => b.properties?.datetime - a.properties?.datetime
-  );
-
+export default function Sidebar({
+  showSegmentDetails,
+  setShowSegmentDetails,
+}: {
+  showSegmentDetails: boolean;
+  setShowSegmentDetails: (showSegmentDetails: boolean) => void;
+}) {
   return (
-    <Stack p={4} gap={4}>
-      <Heading size={"2xl"}>A Colorado Trail relay</Heading>
-      <Text>
-        Brought to you by{" "}
+    <Stack px={4} pt={8} gap={4}>
+      <Heading>
         <Span fontWeight="bold" bg="green.emphasized" color="green.fg" p="1">
           Bex 🚴‍♀️
         </Span>{" "}
         and{" "}
         <Span fontWeight={"bold"} bg="blue.emphasized" color="blue.fg" p="1">
           Kelly 🏃‍♀️
-        </Span>
+        </Span>{" "}
+        do a <abbr title="Colorado Trail">CT</abbr> relay
+      </Heading>
+      <Text fontWeight={"lighter"} fontSize={"sm"}>
+        Summer 2025
       </Text>
-      <HStack>
-        <Button variant={"outline"} asChild>
-          <a href="https://share.garmin.com/JOYQV/" target="_blank">
-            Live tracking <LuExternalLink></LuExternalLink>
-          </a>
-        </Button>
-        <ColorModeButton></ColorModeButton>
-      </HStack>
-      <Text fontSize={"sm"} fontWeight={"light"}>
-        These data were last updated{" "}
-        {locations.features[0].properties?.datetime.toLocaleString()}.
-      </Text>
+      <Checkbox.Root
+        checked={showSegmentDetails}
+        onCheckedChange={(e) => setShowSegmentDetails(!!e.checked)}
+      >
+        <Checkbox.HiddenInput></Checkbox.HiddenInput>
+        <Checkbox.Label>Show segment details?</Checkbox.Label>
+        <Checkbox.Control></Checkbox.Control>
+      </Checkbox.Root>
     </Stack>
   );
 }
