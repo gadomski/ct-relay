@@ -6,9 +6,11 @@ import {
   ScaleControl,
   type MapRef,
 } from "react-map-gl/maplibre";
+import useAppState from "../hooks/app-state";
 import ColoradoTrail from "./colorado-trail";
-import LastSeen from "./last-seen";
+import Legs from "./legs";
 import "./map.css";
+import Track from "./track";
 import { useColorModeValue } from "./ui/color-mode";
 
 export default function Map() {
@@ -17,6 +19,7 @@ export default function Map() {
     "positron-gl-style",
     "dark-matter-gl-style"
   );
+  const { showTrack } = useAppState();
 
   return (
     <MaplibreMap
@@ -29,10 +32,11 @@ export default function Map() {
         },
       }}
       mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
-      interactiveLayerIds={["last-seen-circle"]}
+      interactiveLayerIds={["track"]}
     >
+      <Legs></Legs>
+      {showTrack && <Track></Track>}
       <ColoradoTrail></ColoradoTrail>
-      <LastSeen></LastSeen>
       <NavigationControl></NavigationControl>
       <ScaleControl unit="imperial"></ScaleControl>
     </MaplibreMap>

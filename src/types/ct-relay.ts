@@ -1,12 +1,6 @@
-import type { Feature, GeoJsonProperties, Point } from "geojson";
-
-export type Location = Feature<Point, LocationProperties>;
-
-export type LocationProperties = GeoJsonProperties & {
-  person: "Bex" | "Kelly";
-};
-
-export interface Handoff {
+export interface Checkin {
+  person: Person;
   datetime: Date;
-  person: "Bex" | "Kelly";
 }
+
+export type Person = "Bex" | "Kelly";
