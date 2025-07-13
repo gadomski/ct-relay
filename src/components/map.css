@@ -7,6 +7,11 @@
     display: none;
 }
 
+.maplibregl-ctrl {
+    color: var(--chakra-colors-fg);
+}
+
 .maplibregl-ctrl-scale {
     background: transparent;
+    border-color: var(--chakra-colors-fg);
 }
