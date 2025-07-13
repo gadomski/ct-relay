@@ -1,17 +1,12 @@
 import { point } from "@turf/turf";
-import { default as rawHandoffs } from "../data/handoffs.json";
 import track_0 from "../data/tracks/0.json";
 import track_1 from "../data/tracks/1.json";
 import type { Handoff, Location } from "../types/ct-relay";
 import type { Track } from "../types/garmin";
+import { getHandoffs } from "./handoffs";
 
 export default function getLocations() {
-  const handoffs = rawHandoffs.map((handoff) => {
-    return {
-      person: handoff.person as "Bex" | "Kelly",
-      datetime: new Date(handoff.datetime),
-    };
-  });
+  const handoffs = getHandoffs();
   const locations = updateLocations(
     updateLocations([], handoffs, track_0),
     handoffs,
