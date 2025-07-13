@@ -1,6 +1,10 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useRef } from "react";
-import { Map as MaplibreMap, type MapRef } from "react-map-gl/maplibre";
+import {
+  Map as MaplibreMap,
+  ScaleControl,
+  type MapRef,
+} from "react-map-gl/maplibre";
 import ColoradoTrail from "./colorado-trail";
 import LastSeen from "./last-seen";
 import "./map.css";
@@ -28,6 +32,7 @@ export default function Map() {
     >
       <ColoradoTrail></ColoradoTrail>
       <LastSeen></LastSeen>
+      <ScaleControl unit="imperial"></ScaleControl>
     </MaplibreMap>
   );
 }

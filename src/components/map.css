@@ -6,3 +6,7 @@
 .maplibregl-popup-tip {
     display: none;
 }
+
+.maplibregl-ctrl-scale {
+    background: transparent;
+}
