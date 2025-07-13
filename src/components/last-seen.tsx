@@ -6,29 +6,28 @@ import kellyImg from "../img/kelly.jpg";
 import getLastSeen from "../utils/last-seen";
 import { PERSON_COLORS } from "./colors";
 
-interface PopupInfo {
-  person: "Bex" | "Kelly";
-  datetime: Date;
-  src: string;
-}
-
 export default function LastSeen() {
   const map = useMap();
   const lastSeen = getLastSeen();
-  const [popupInfo, setPopupInfo] = useState<PopupInfo | undefined>({
-    person: lastSeen.properties.person,
-    datetime: lastSeen.properties.datetime,
-    src: lastSeen.properties.person == "Bex" ? bexImg : kellyImg,
-  });
+  const [open, setOpen] = useState(true);
+  const src = lastSeen.properties.person == "Bex" ? bexImg : kellyImg;
 
   useEffect(() => {
     if (map.current) {
       map.current.on("click", "last-seen-circle", () => {
-        setPopupInfo({
-          person: lastSeen.properties.person,
-          datetime: lastSeen.properties.datetime,
-          src: lastSeen.properties.person == "Bex" ? bexImg : kellyImg,
-        });
+        setOpen((previous) => (!previous ? true : false));
+      });
+
+      map.current.on("mouseenter", "last-seen-circle", () => {
+        if (map.current) {
+          map.current.getCanvas().style.cursor = "pointer";
+        }
+      });
+
+      map.current.on("mouseleave", "last-seen-circle", () => {
+        if (map.current) {
+          map.current.getCanvas().style.cursor = "";
+        }
       });
     }
   }, [map, lastSeen]);
@@ -39,25 +38,28 @@ export default function LastSeen() {
         <Layer
           type="circle"
           id="last-seen-circle"
-          paint={{ "circle-color": PERSON_COLORS }}
+          paint={{ "circle-color": PERSON_COLORS, "circle-radius": 6 }}
         ></Layer>
       </Source>
-      {popupInfo && (
+      {open && (
         <Popup
           anchor="top"
           offset={10}
           longitude={lastSeen.geometry.coordinates[0]}
           latitude={lastSeen.geometry.coordinates[1]}
-          onClose={() => setPopupInfo(undefined)}
           closeButton={false}
+          focusAfterOpen={false}
+          onClose={() => {
+            setOpen(false);
+          }}
         >
           <Card.Root size={"sm"}>
             <Card.Body>
               <Avatar.Root>
                 <Avatar.Fallback></Avatar.Fallback>
-                <Avatar.Image src={kellyImg}></Avatar.Image>
+                <Avatar.Image src={src}></Avatar.Image>
               </Avatar.Root>
-              <Card.Title>Kelly</Card.Title>
+              <Card.Title>{lastSeen.properties.person}</Card.Title>
               <Card.Description>
                 {lastSeen.properties.datetime.toLocaleString()}
               </Card.Description>
