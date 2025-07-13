@@ -50,7 +50,7 @@ export default function ColoradoTrail() {
         <Layer
           type="line"
           id="colorado-trail-line"
-          paint={{ "line-color": PERSON_COLORS, "line-width": 2 }}
+          paint={{ "line-color": PERSON_COLORS, "line-width": 4 }}
         ></Layer>
       </Source>
     </>
