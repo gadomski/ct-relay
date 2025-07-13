@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Map as MaplibreMap, type MapRef } from "react-map-gl/maplibre";
 import ColoradoTrail from "./colorado-trail";
 import LastSeen from "./last-seen";
+import "./map.css";
 import { useColorModeValue } from "./ui/color-mode";
 
 export default function Map() {

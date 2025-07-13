@@ -43,15 +43,15 @@ export default function LastSeen() {
         ></Layer>
       </Source>
       {popupInfo && (
-        <Popup
-          anchor="top"
-          offset={10}
-          longitude={lastSeen.geometry.coordinates[0]}
-          latitude={lastSeen.geometry.coordinates[1]}
-          onClose={() => setPopupInfo(undefined)}
-          closeButton={false}
-        >
-          <Card.Root size={"sm"} variant={"subtle"}>
+        <Card.Root size={"sm"} variant={"elevated"} asChild>
+          <Popup
+            anchor="top"
+            offset={10}
+            longitude={lastSeen.geometry.coordinates[0]}
+            latitude={lastSeen.geometry.coordinates[1]}
+            onClose={() => setPopupInfo(undefined)}
+            closeButton={false}
+          >
             <Card.Body>
               <Avatar.Root>
                 <Avatar.Fallback></Avatar.Fallback>
@@ -62,8 +62,8 @@ export default function LastSeen() {
                 {lastSeen.properties.datetime.toLocaleString()}
               </Card.Description>
             </Card.Body>
-          </Card.Root>
-        </Popup>
+          </Popup>
+        </Card.Root>
       )}
     </>
   );
