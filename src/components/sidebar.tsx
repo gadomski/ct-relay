@@ -76,8 +76,8 @@ export default function Sidebar() {
           <Checkbox.HiddenInput></Checkbox.HiddenInput>
           <Checkbox.Label>
             <HStack>
-              <LuCircle color={BEX_SOLID} fill={BEX_SOLID}></LuCircle>
-              <LuCircle color={KELLY_SOLID} fill={KELLY_SOLID}></LuCircle>
+              <LuCircle fill={BEX_SOLID}></LuCircle>
+              <LuCircle fill={KELLY_SOLID}></LuCircle>
               Show track
             </HStack>
           </Checkbox.Label>

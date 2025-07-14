@@ -48,15 +48,16 @@ export default function Track() {
           id="track"
           paint={{
             "circle-color": PERSON_COLORS,
-            "circle-opacity": 0.6,
             "circle-radius": [
               "case",
               ["==", ["id"], hover || -1],
-              8,
+              10,
               ["==", ["id"], click?.id || -1],
-              8,
+              10,
               6,
             ],
+            "circle-stroke-color": "black",
+            "circle-stroke-width": 2,
           }}
         ></Layer>
       </Source>
@@ -86,7 +87,9 @@ function TrackPopupCard({
   onClose: () => void;
 }) {
   return (
-    <Card.Root>
+    <Card.Root
+      colorPalette={feature.properties.person == "Bex" ? "green" : "blue"}
+    >
       <Card.Body>
         <Stack gap={3}>
           <Text fontWeight={"light"}>Track</Text>
