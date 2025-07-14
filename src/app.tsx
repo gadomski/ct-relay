@@ -28,6 +28,7 @@ export default function App() {
   const handoffPoints = getHandoffPoints(track, handoffs);
   const legs = getLegs(coloradoTrail, handoffPoints, track[track.length - 1]);
   const [showTrack, setShowTrack] = useState(false);
+  const [showSegments, setShowSegments] = useState(true);
 
   return (
     <Context.Provider
@@ -37,6 +38,8 @@ export default function App() {
         legs,
         showTrack,
         setShowTrack,
+        showSegments,
+        setShowSegments,
       }}
     >
       <SimpleGrid columns={{ base: 1, md: 3 }} h={"100dvh"}>

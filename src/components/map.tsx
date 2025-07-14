@@ -7,8 +7,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useRef, useState } from "react";
-import { LuCircle, LuInfo, LuRadio } from "react-icons/lu";
+import { useEffect, useRef, useState } from "react";
+import { LuInfo, LuRadio } from "react-icons/lu";
 import {
   Map as MaplibreMap,
   NavigationControl,
@@ -20,6 +20,7 @@ import ColoradoTrail from "./colorado-trail";
 import Info from "./info";
 import Legs from "./legs";
 import "./map.css";
+import Segments from "./segments";
 import Track from "./track";
 import { ColorModeButton, useColorModeValue } from "./ui/color-mode";
 
@@ -29,7 +30,6 @@ export default function Map() {
     "positron-gl-style",
     "dark-matter-gl-style"
   );
-  const { showTrack } = useAppState();
 
   return (
     <MaplibreMap
@@ -45,8 +45,9 @@ export default function Map() {
       interactiveLayerIds={["track"]}
     >
       <Legs></Legs>
-      {showTrack && <Track></Track>}
       <ColoradoTrail></ColoradoTrail>
+      <Segments></Segments>
+      <Track></Track>
       <NavigationControl></NavigationControl>
       <ScaleControl unit="imperial"></ScaleControl>
       <MapControl></MapControl>
@@ -55,8 +56,19 @@ export default function Map() {
 }
 
 function MapControl() {
-  const { showTrack, setShowTrack } = useAppState();
+  const { showTrack, setShowTrack, showSegments, setShowSegments } =
+    useAppState();
   const [showInfo, setShowInfo] = useState(false);
+  const [segmentsChecked, setSegmentsChecked] = useState(showSegments);
+  const [trackChecked, setTrackChecked] = useState(showTrack);
+
+  useEffect(() => {
+    setShowSegments(segmentsChecked);
+  }, [segmentsChecked, setShowSegments]);
+
+  useEffect(() => {
+    setShowTrack(trackChecked);
+  }, [trackChecked, setShowTrack]);
 
   return (
     <>
@@ -75,17 +87,25 @@ function MapControl() {
       >
         <Checkbox.Root
           variant={"subtle"}
-          checked={showTrack}
-          onCheckedChange={(e) => setShowTrack(!!e.checked)}
+          checked={segmentsChecked}
+          onCheckedChange={(e) => setSegmentsChecked(!!e.checked)}
         >
           <Checkbox.HiddenInput></Checkbox.HiddenInput>
-          <Checkbox.Label>
-            <HStack>
-              Show track
-              <LuCircle fill="black"></LuCircle>
-            </HStack>
-          </Checkbox.Label>
           <Checkbox.Control></Checkbox.Control>
+          <Checkbox.Label>
+            <HStack>Show segments</HStack>
+          </Checkbox.Label>
+        </Checkbox.Root>
+        <Checkbox.Root
+          variant={"subtle"}
+          checked={trackChecked}
+          onCheckedChange={(e) => setTrackChecked(!!e.checked)}
+        >
+          <Checkbox.HiddenInput></Checkbox.HiddenInput>
+          <Checkbox.Control></Checkbox.Control>
+          <Checkbox.Label>
+            <HStack>Show track</HStack>
+          </Checkbox.Label>
         </Checkbox.Root>
         <ButtonGroup variant={"ghost"} gap={0} size={"sm"}>
           <ColorModeButton></ColorModeButton>

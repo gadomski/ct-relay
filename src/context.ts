@@ -8,6 +8,8 @@ export interface ContextType {
   legs: Feature<LineString, CheckinRange>[];
   showTrack: boolean;
   setShowTrack: (showTrack: boolean) => void;
+  showSegments: boolean;
+  setShowSegments: (showSegments: boolean) => void;
 }
 
 export const Context = createContext<ContextType | null>(null);
