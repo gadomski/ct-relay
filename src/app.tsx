@@ -5,7 +5,14 @@ import {
   IconButton,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { feature, lineSlice, midpoint, point } from "@turf/turf";
+import {
+  along,
+  distance,
+  feature,
+  lineSlice,
+  point,
+  shortestPath,
+} from "@turf/turf";
 import type { Feature, FeatureCollection, LineString, Point } from "geojson";
 import { useState } from "react";
 import { LuRadio } from "react-icons/lu";
@@ -114,8 +121,13 @@ function getHandoffPoints(
 
     if (handoff.datetime < a.properties.datetime) {
       handoffPoints.push(a);
-    } else if (handoff.datetime < b.properties.datetime) {
-      const p = midpoint(a.geometry.coordinates, b.geometry.coordinates);
+    } else if (handoff.datetime <= b.properties.datetime) {
+      const delta =
+        (+handoff.datetime - +a.properties.datetime) /
+        (+b.properties.datetime - +a.properties.datetime);
+      const fullDistance = distance(a, b);
+      const path = shortestPath(a, b);
+      const p = along(path, delta * fullDistance);
       handoffPoints.push(point(p.geometry.coordinates, handoff));
     }
   }
