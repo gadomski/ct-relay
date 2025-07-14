@@ -38,7 +38,12 @@ export default function App() {
       }}
     >
       <SimpleGrid columns={{ base: 2, md: 4 }} h={"100dvh"}>
-        <GridItem shadow={"inset"} hideBelow={"md"}>
+        <GridItem
+          shadow={"inset"}
+          hideBelow={"md"}
+          h={"100%"}
+          overflow={"scroll"}
+        >
           <Sidebar></Sidebar>
         </GridItem>
         <GridItem colSpan={{ base: 2, md: 3 }}>
@@ -93,24 +98,30 @@ function getHandoffPoints(
   handoffs: Checkin[]
 ) {
   const handoffPoints: Feature<Point, Checkin>[] = [];
+  let handoffIndex = 0;
   for (let index = 0; index < track.length - 1; index++) {
-    if (handoffPoints.length >= handoffs.length) {
+    if (handoffIndex >= handoffs.length) {
       break;
     }
-    const handoff = handoffs[handoffPoints.length];
+    const handoff = handoffs[handoffIndex];
     const a = track[index];
     const b = track[index + 1];
 
     if (handoff.datetime < a.properties.datetime) {
       handoffPoints.push(a);
+      handoffIndex += 1;
+    } else if (
+      a.properties.datetime.getDay() != b.properties.datetime.getDay()
+    ) {
+      // TODO
+      const midnight = new Date(b.properties.datetime);
+      midnight.setHours(0, 0, 0, 0);
+      const p = interpolate(a, b, midnight);
+      handoffPoints.push(point(p.geometry.coordinates, a.properties));
     } else if (handoff.datetime <= b.properties.datetime) {
-      const delta =
-        (+handoff.datetime - +a.properties.datetime) /
-        (+b.properties.datetime - +a.properties.datetime);
-      const fullDistance = distance(a, b);
-      const path = shortestPath(a, b);
-      const p = along(path, delta * fullDistance);
+      const p = interpolate(a, b, handoff.datetime);
       handoffPoints.push(point(p.geometry.coordinates, handoff));
+      handoffIndex += 1;
     }
   }
   return handoffPoints;
@@ -129,8 +140,23 @@ function getLegs(
     legs.push(
       feature(lineSlice(a, b, coloradoTrail).geometry, {
         person: a.properties.person,
+        startDatetime: a.properties.datetime,
+        endDatetime: b.properties.datetime,
       })
     );
   }
   return legs;
+}
+
+function interpolate(
+  a: Feature<Point, Checkin>,
+  b: Feature<Point, Checkin>,
+  datetime: Date
+) {
+  const delta =
+    (+datetime - +a.properties.datetime) /
+    (+b.properties.datetime - +a.properties.datetime);
+  const fullDistance = distance(a, b);
+  const path = shortestPath(a, b);
+  return along(path, delta * fullDistance);
 }

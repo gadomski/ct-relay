@@ -67,6 +67,7 @@ function MapControl() {
       px={4}
       pb={2}
       pt={4}
+      gap={4}
     >
       <Checkbox.Root
         variant={"subtle"}
@@ -82,7 +83,7 @@ function MapControl() {
         </Checkbox.Label>
         <Checkbox.Control></Checkbox.Control>
       </Checkbox.Root>
-      <ButtonGroup variant={"ghost"} gap={0}>
+      <ButtonGroup variant={"ghost"} gap={0} size={"sm"}>
         <ColorModeButton></ColorModeButton>
         <IconButton asChild>
           <a href="https://share.garmin.com/JOYQV" target="_blank">
