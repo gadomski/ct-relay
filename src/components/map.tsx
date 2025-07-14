@@ -1,13 +1,14 @@
 import {
   ButtonGroup,
   Checkbox,
+  Drawer,
   HStack,
   IconButton,
   Stack,
 } from "@chakra-ui/react";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useRef } from "react";
-import { LuCircle, LuRadio } from "react-icons/lu";
+import { useRef, useState } from "react";
+import { LuCircle, LuInfo, LuRadio } from "react-icons/lu";
 import {
   Map as MaplibreMap,
   NavigationControl,
@@ -16,6 +17,7 @@ import {
 } from "react-map-gl/maplibre";
 import useAppState from "../hooks/app-state";
 import ColoradoTrail from "./colorado-trail";
+import Info from "./info";
 import Legs from "./legs";
 import "./map.css";
 import Track from "./track";
@@ -54,43 +56,60 @@ export default function Map() {
 
 function MapControl() {
   const { showTrack, setShowTrack } = useAppState();
+  const [showInfo, setShowInfo] = useState(false);
 
   return (
-    <Stack
-      position={"absolute"}
-      top={0}
-      left={0}
-      margin={4}
-      background={"bg.panel"}
-      boxShadow={"md"}
-      rounded={4}
-      px={4}
-      pb={2}
-      pt={4}
-      gap={4}
-    >
-      <Checkbox.Root
-        variant={"subtle"}
-        checked={showTrack}
-        onCheckedChange={(e) => setShowTrack(!!e.checked)}
+    <>
+      <Stack
+        position={"absolute"}
+        top={0}
+        left={0}
+        margin={4}
+        background={"bg.panel"}
+        boxShadow={"md"}
+        rounded={4}
+        px={4}
+        pb={2}
+        pt={4}
+        gap={4}
       >
-        <Checkbox.HiddenInput></Checkbox.HiddenInput>
-        <Checkbox.Label>
-          <HStack>
-            Show track
-            <LuCircle fill="black"></LuCircle>
-          </HStack>
-        </Checkbox.Label>
-        <Checkbox.Control></Checkbox.Control>
-      </Checkbox.Root>
-      <ButtonGroup variant={"ghost"} gap={0} size={"sm"}>
-        <ColorModeButton></ColorModeButton>
-        <IconButton asChild>
-          <a href="https://share.garmin.com/JOYQV" target="_blank">
-            <LuRadio></LuRadio>
-          </a>
-        </IconButton>
-      </ButtonGroup>
-    </Stack>
+        <Checkbox.Root
+          variant={"subtle"}
+          checked={showTrack}
+          onCheckedChange={(e) => setShowTrack(!!e.checked)}
+        >
+          <Checkbox.HiddenInput></Checkbox.HiddenInput>
+          <Checkbox.Label>
+            <HStack>
+              Show track
+              <LuCircle fill="black"></LuCircle>
+            </HStack>
+          </Checkbox.Label>
+          <Checkbox.Control></Checkbox.Control>
+        </Checkbox.Root>
+        <ButtonGroup variant={"ghost"} gap={0} size={"sm"}>
+          <ColorModeButton></ColorModeButton>
+          <IconButton asChild>
+            <a href="https://share.garmin.com/JOYQV" target="_blank">
+              <LuRadio></LuRadio>
+            </a>
+          </IconButton>
+          <IconButton hideFrom={"md"} onClick={() => setShowInfo(true)}>
+            <LuInfo></LuInfo>
+          </IconButton>
+        </ButtonGroup>
+      </Stack>
+      <Drawer.Root open={showInfo} onOpenChange={(e) => setShowInfo(e.open)}>
+        <Drawer.Backdrop></Drawer.Backdrop>
+        <Drawer.Trigger></Drawer.Trigger>
+        <Drawer.Positioner>
+          <Drawer.Content>
+            <Drawer.Body>
+              <Info></Info>
+            </Drawer.Body>
+          </Drawer.Content>
+        </Drawer.Positioner>
+      </Drawer.Root>
+    </>
   );
 }

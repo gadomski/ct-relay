@@ -9,8 +9,8 @@ import {
 } from "@turf/turf";
 import type { Feature, FeatureCollection, LineString, Point } from "geojson";
 import { useState } from "react";
+import Info from "./components/info";
 import Map from "./components/map";
-import Sidebar from "./components/sidebar";
 import { Context } from "./context";
 import rawColoradoTrail from "./data/colorado-trail.json";
 import rawHandoffs from "./data/handoffs.json";
@@ -46,7 +46,7 @@ export default function App() {
           h={"100%"}
           overflow={"scroll"}
         >
-          <Sidebar></Sidebar>
+          <Info></Info>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <Map></Map>
