@@ -39,7 +39,7 @@ export default function App() {
         setShowTrack,
       }}
     >
-      <SimpleGrid columns={{ base: 2, md: 4 }} h={"100dvh"}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} h={"100dvh"}>
         <GridItem
           shadow={"inset"}
           hideBelow={"md"}
@@ -48,7 +48,7 @@ export default function App() {
         >
           <Sidebar></Sidebar>
         </GridItem>
-        <GridItem colSpan={{ base: 2, md: 3 }}>
+        <GridItem colSpan={{ base: 1, md: 2 }}>
           <Map></Map>
         </GridItem>
       </SimpleGrid>
