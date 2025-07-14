@@ -1,10 +1,4 @@
-import {
-  ButtonGroup,
-  GridItem,
-  HStack,
-  IconButton,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import {
   along,
   distance,
@@ -15,10 +9,8 @@ import {
 } from "@turf/turf";
 import type { Feature, FeatureCollection, LineString, Point } from "geojson";
 import { useState } from "react";
-import { LuRadio } from "react-icons/lu";
 import Map from "./components/map";
 import Sidebar from "./components/sidebar";
-import { ColorModeButton } from "./components/ui/color-mode";
 import { Context } from "./context";
 import rawColoradoTrail from "./data/colorado-trail.json";
 import rawHandoffs from "./data/handoffs.json";
@@ -53,16 +45,6 @@ export default function App() {
           <Map></Map>
         </GridItem>
       </SimpleGrid>
-      <HStack position={"absolute"} bottom={0} left={0} margin={4}>
-        <ButtonGroup variant={"ghost"}>
-          <ColorModeButton></ColorModeButton>
-          <IconButton asChild>
-            <a href="https://share.garmin.com/JOYQV" target="_blank">
-              <LuRadio></LuRadio>
-            </a>
-          </IconButton>
-        </ButtonGroup>
-      </HStack>
     </Context.Provider>
   );
 }

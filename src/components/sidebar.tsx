@@ -4,14 +4,16 @@ import {
   Heading,
   Highlight,
   HStack,
-  Separator,
   Span,
   Stack,
+  Table,
   Text,
 } from "@chakra-ui/react";
+import type { Feature, LineString } from "geojson";
 import { LuCircle } from "react-icons/lu";
 import useAppState from "../hooks/app-state";
 import { useFallbackPersonColor } from "../hooks/person-colors";
+import type { Person } from "../types/ct-relay";
 
 const KELLY = {
   fontWeight: "bold",
@@ -26,7 +28,7 @@ const BEX = {
 };
 
 export default function Sidebar() {
-  const { showTrack, setShowTrack } = useAppState();
+  const { showTrack, setShowTrack, legs } = useAppState();
 
   return (
     <Stack px={4} pt={6} gap={8}>
@@ -65,9 +67,8 @@ export default function Sidebar() {
         </Blockquote.Root>
       </Stack>
 
-      <Separator></Separator>
-
-      <Stack>
+      <Stack gap={4}>
+        <Heading size={"lg"}>Controls</Heading>
         <Checkbox.Root
           variant={"subtle"}
           checked={showTrack}
@@ -83,6 +84,30 @@ export default function Sidebar() {
           <Checkbox.Control></Checkbox.Control>
         </Checkbox.Root>
       </Stack>
+
+      <Stack>
+        <Heading size={"lg"}>Miles</Heading>
+        <DistanceTable legs={legs}></DistanceTable>
+      </Stack>
     </Stack>
+  );
+}
+
+function DistanceTable({
+  legs,
+}: {
+  legs: Feature<LineString, { person: Person }>[];
+}) {
+  return (
+    <Table.Root>
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeader>Day</Table.ColumnHeader>
+          <Table.ColumnHeader>Bex</Table.ColumnHeader>
+          <Table.ColumnHeader>Kelly</Table.ColumnHeader>
+          <Table.ColumnHeader>Total</Table.ColumnHeader>
+        </Table.Row>
+      </Table.Header>
+    </Table.Root>
   );
 }

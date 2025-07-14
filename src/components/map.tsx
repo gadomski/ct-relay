@@ -1,5 +1,7 @@
+import { ButtonGroup, HStack, IconButton } from "@chakra-ui/react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useRef } from "react";
+import { LuRadio } from "react-icons/lu";
 import {
   Map as MaplibreMap,
   NavigationControl,
@@ -11,7 +13,7 @@ import ColoradoTrail from "./colorado-trail";
 import Legs from "./legs";
 import "./map.css";
 import Track from "./track";
-import { useColorModeValue } from "./ui/color-mode";
+import { ColorModeButton, useColorModeValue } from "./ui/color-mode";
 
 export default function Map() {
   const mapRef = useRef<MapRef>(null);
@@ -39,6 +41,24 @@ export default function Map() {
       <ColoradoTrail></ColoradoTrail>
       <NavigationControl></NavigationControl>
       <ScaleControl unit="imperial"></ScaleControl>
+      <HStack
+        position={"absolute"}
+        top={0}
+        left={0}
+        margin={4}
+        background={"bg.panel"}
+        boxShadow={"md"}
+        rounded={4}
+      >
+        <ButtonGroup variant={"ghost"} gap={0}>
+          <ColorModeButton></ColorModeButton>
+          <IconButton asChild>
+            <a href="https://share.garmin.com/JOYQV" target="_blank">
+              <LuRadio></LuRadio>
+            </a>
+          </IconButton>
+        </ButtonGroup>
+      </HStack>
     </MaplibreMap>
   );
 }
