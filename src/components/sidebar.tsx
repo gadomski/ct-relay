@@ -6,7 +6,6 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import useAppState from "../hooks/app-state";
 
 const KELLY = {
   fontWeight: "bold",
@@ -21,8 +20,6 @@ const BEX = {
 };
 
 export default function Sidebar() {
-  const { showTrack, setShowTrack } = useAppState();
-
   return (
     <Stack px={4} pt={6} gap={4}>
       <Heading>
