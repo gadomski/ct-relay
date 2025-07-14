@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
-import { LuInfo, LuRadio } from "react-icons/lu";
+import { LuExternalLink, LuInfo, LuRadio } from "react-icons/lu";
 import {
   Map as MaplibreMap,
   NavigationControl,
@@ -20,6 +20,7 @@ import ColoradoTrail from "./colorado-trail";
 import Info from "./info";
 import Legs from "./legs";
 import "./map.css";
+import OpenTopoMap from "./open-topo-map";
 import Segments from "./segments";
 import Track from "./track";
 import { ColorModeButton, useColorModeValue } from "./ui/color-mode";
@@ -44,6 +45,7 @@ export default function Map() {
       mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
       interactiveLayerIds={["track"]}
     >
+      <OpenTopoMap></OpenTopoMap>
       <Legs></Legs>
       <ColoradoTrail></ColoradoTrail>
       <Segments></Segments>
@@ -56,11 +58,18 @@ export default function Map() {
 }
 
 function MapControl() {
-  const { showTrack, setShowTrack, showSegments, setShowSegments } =
-    useAppState();
+  const {
+    showTrack,
+    setShowTrack,
+    showSegments,
+    setShowSegments,
+    showOpenTopoMap,
+    setShowOpenTopoMap,
+  } = useAppState();
   const [showInfo, setShowInfo] = useState(false);
   const [segmentsChecked, setSegmentsChecked] = useState(showSegments);
   const [trackChecked, setTrackChecked] = useState(showTrack);
+  const [openTopoMapChecked, setOpenTopoMapChecked] = useState(showOpenTopoMap);
 
   useEffect(() => {
     setShowSegments(segmentsChecked);
@@ -69,6 +78,10 @@ function MapControl() {
   useEffect(() => {
     setShowTrack(trackChecked);
   }, [trackChecked, setShowTrack]);
+
+  useEffect(() => {
+    setShowOpenTopoMap(openTopoMapChecked);
+  }, [openTopoMapChecked, setShowOpenTopoMap]);
 
   return (
     <>
@@ -105,6 +118,27 @@ function MapControl() {
           <Checkbox.Control></Checkbox.Control>
           <Checkbox.Label>
             <HStack>Show track</HStack>
+          </Checkbox.Label>
+        </Checkbox.Root>
+        <Checkbox.Root
+          variant={"subtle"}
+          checked={openTopoMapChecked}
+          onCheckedChange={(e) => setOpenTopoMapChecked(!!e.checked)}
+        >
+          <Checkbox.HiddenInput></Checkbox.HiddenInput>
+          <Checkbox.Control></Checkbox.Control>
+          <Checkbox.Label>
+            <HStack>
+              Show OpenTopoMap
+              <IconButton variant={"ghost"} size={"2xs"}>
+                <a
+                  href="https://wiki.openstreetmap.org/wiki/OpenTopoMap"
+                  target="_blank"
+                >
+                  <LuExternalLink></LuExternalLink>
+                </a>
+              </IconButton>
+            </HStack>
           </Checkbox.Label>
         </Checkbox.Root>
         <ButtonGroup variant={"ghost"} gap={0} size={"sm"}>

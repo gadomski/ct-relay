@@ -10,6 +10,8 @@ export interface ContextType {
   setShowTrack: (showTrack: boolean) => void;
   showSegments: boolean;
   setShowSegments: (showSegments: boolean) => void;
+  showOpenTopoMap: boolean;
+  setShowOpenTopoMap: (showOpenTopoMap: boolean) => void;
 }
 
 export const Context = createContext<ContextType | null>(null);

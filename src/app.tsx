@@ -29,6 +29,7 @@ export default function App() {
   const legs = getLegs(coloradoTrail, handoffPoints, track[track.length - 1]);
   const [showTrack, setShowTrack] = useState(false);
   const [showSegments, setShowSegments] = useState(true);
+  const [showOpenTopoMap, setShowOpenTopoMap] = useState(false);
 
   return (
     <Context.Provider
@@ -40,6 +41,8 @@ export default function App() {
         setShowTrack,
         showSegments,
         setShowSegments,
+        showOpenTopoMap,
+        setShowOpenTopoMap,
       }}
     >
       <SimpleGrid columns={{ base: 1, md: 3 }} h={"100dvh"}>
