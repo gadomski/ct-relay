@@ -1,7 +1,7 @@
 import { featureCollection } from "@turf/turf";
 import { Layer, Source } from "react-map-gl/maplibre";
 import useAppState from "../hooks/app-state";
-import { PERSON_COLORS } from "./colors";
+import usePersonColors from "../hooks/person-colors";
 
 export default function Legs() {
   const { legs } = useAppState();
@@ -11,7 +11,7 @@ export default function Legs() {
         type="line"
         layout={{ "line-cap": "butt", "line-join": "round" }}
         paint={{
-          "line-color": PERSON_COLORS,
+          "line-color": usePersonColors(),
           "line-width": 6,
           "line-opacity": 0.8,
         }}

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { LuCircle } from "react-icons/lu";
 import useAppState from "../hooks/app-state";
-import { BEX_SOLID, KELLY_SOLID } from "./colors";
+import { useFallbackPersonColor } from "../hooks/person-colors";
 
 const KELLY = {
   fontWeight: "bold",
@@ -76,8 +76,7 @@ export default function Sidebar() {
           <Checkbox.HiddenInput></Checkbox.HiddenInput>
           <Checkbox.Label>
             <HStack>
-              <LuCircle fill={BEX_SOLID}></LuCircle>
-              <LuCircle fill={KELLY_SOLID}></LuCircle>
+              <LuCircle fill={useFallbackPersonColor()}></LuCircle>
               Show track
             </HStack>
           </Checkbox.Label>

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Layer, Popup, Source, useMap } from "react-map-gl/maplibre";
 import useAppState from "../hooks/app-state";
 import type { Checkin } from "../types/ct-relay";
-import { PERSON_COLORS } from "./colors";
 import { PersonAvatar } from "./person";
 
 export default function Track() {
@@ -20,14 +19,17 @@ export default function Track() {
         if (e.features) {
           setHover(e.features.at(0)?.id);
         }
-        if (map.current) {
+        if (map.current && !e.features?.at(0)?.properties.cluster) {
           map.current.getCanvas().style.cursor = "pointer";
         }
       });
 
       map.current.on("click", "track", (e) => {
         if (e.features) {
-          setClick(e.features.at(0) as Feature<Point, Checkin> | undefined);
+          const feature = e.features.at(0);
+          if (!feature?.properties.cluster) {
+            setClick(feature as Feature<Point, Checkin> | undefined);
+          }
         }
       });
 
@@ -55,17 +57,27 @@ export default function Track() {
             visibility: showTrack ? "visible" : "none",
           }}
           paint={{
-            "circle-color": PERSON_COLORS,
             "circle-radius": [
               "case",
               ["==", ["id"], hover || -1],
               10,
               ["==", ["id"], click?.id || -1],
               10,
-              6,
+              ["to-boolean", ["get", "cluster"]],
+              12,
+              8,
             ],
-            "circle-stroke-color": "black",
-            "circle-stroke-width": 2,
+          }}
+        ></Layer>
+        <Layer
+          type="symbol"
+          id="track-cluster-count"
+          layout={{
+            visibility: showTrack ? "visible" : "none",
+            "text-field": ["get", "point_count"],
+          }}
+          paint={{
+            "text-color": "white",
           }}
         ></Layer>
       </Source>
