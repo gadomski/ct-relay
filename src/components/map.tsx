@@ -1,7 +1,13 @@
-import { ButtonGroup, HStack, IconButton } from "@chakra-ui/react";
+import {
+  ButtonGroup,
+  Checkbox,
+  HStack,
+  IconButton,
+  Stack,
+} from "@chakra-ui/react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useRef } from "react";
-import { LuRadio } from "react-icons/lu";
+import { LuCircle, LuRadio } from "react-icons/lu";
 import {
   Map as MaplibreMap,
   NavigationControl,
@@ -41,24 +47,49 @@ export default function Map() {
       <ColoradoTrail></ColoradoTrail>
       <NavigationControl></NavigationControl>
       <ScaleControl unit="imperial"></ScaleControl>
-      <HStack
-        position={"absolute"}
-        top={0}
-        left={0}
-        margin={4}
-        background={"bg.panel"}
-        boxShadow={"md"}
-        rounded={4}
-      >
-        <ButtonGroup variant={"ghost"} gap={0}>
-          <ColorModeButton></ColorModeButton>
-          <IconButton asChild>
-            <a href="https://share.garmin.com/JOYQV" target="_blank">
-              <LuRadio></LuRadio>
-            </a>
-          </IconButton>
-        </ButtonGroup>
-      </HStack>
+      <MapControl></MapControl>
     </MaplibreMap>
+  );
+}
+
+function MapControl() {
+  const { showTrack, setShowTrack } = useAppState();
+
+  return (
+    <Stack
+      position={"absolute"}
+      top={0}
+      left={0}
+      margin={4}
+      background={"bg.panel"}
+      boxShadow={"md"}
+      rounded={4}
+      px={4}
+      pb={2}
+      pt={4}
+    >
+      <Checkbox.Root
+        variant={"subtle"}
+        checked={showTrack}
+        onCheckedChange={(e) => setShowTrack(!!e.checked)}
+      >
+        <Checkbox.HiddenInput></Checkbox.HiddenInput>
+        <Checkbox.Label>
+          <HStack>
+            Show track
+            <LuCircle fill="black"></LuCircle>
+          </HStack>
+        </Checkbox.Label>
+        <Checkbox.Control></Checkbox.Control>
+      </Checkbox.Root>
+      <ButtonGroup variant={"ghost"} gap={0}>
+        <ColorModeButton></ColorModeButton>
+        <IconButton asChild>
+          <a href="https://share.garmin.com/JOYQV" target="_blank">
+            <LuRadio></LuRadio>
+          </a>
+        </IconButton>
+      </ButtonGroup>
+    </Stack>
   );
 }
