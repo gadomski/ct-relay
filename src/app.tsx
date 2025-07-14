@@ -14,7 +14,9 @@ import Sidebar from "./components/sidebar";
 import { Context } from "./context";
 import rawColoradoTrail from "./data/colorado-trail.json";
 import rawHandoffs from "./data/handoffs.json";
-import rawTrack from "./data/track.json";
+import day_1 from "./data/tracks/2025-07-12.json";
+import day_2 from "./data/tracks/2025-07-13.json";
+import day_3 from "./data/tracks/2025-07-14.json";
 import type { Checkin, Person } from "./types/ct-relay";
 import type { Track } from "./types/garmin";
 
@@ -22,7 +24,7 @@ export default function App() {
   const coloradoTrail = (rawColoradoTrail as FeatureCollection<LineString>)
     .features[0].geometry;
   const handoffs = getHandoffs(rawHandoffs);
-  const track = getTrack(rawTrack, handoffs);
+  const track = getTrack([day_1, day_2, day_3], handoffs);
   const handoffPoints = getHandoffPoints(track, handoffs);
   const legs = getLegs(coloradoTrail, handoffPoints, track[track.length - 1]);
   const [showTrack, setShowTrack] = useState(false);
@@ -60,25 +62,36 @@ function getHandoffs(rawHandoffs: { person: string; datetime: string }[]) {
   });
 }
 
-function getTrack(rawTrack: Track, handoffs: Checkin[]) {
-  let id = 0;
-  const points = rawTrack.M.flatMap((m) =>
-    m.A.flatMap((a) =>
-      a.Locations.map((location) => {
-        const datetime = new Date(location.D);
-        const person = getActivePerson(handoffs, datetime);
-        return point(
-          [location.N, location.L],
-          {
-            person,
-            datetime,
-          },
-          { id: id++ }
-        );
-      })
+function getTrack(rawTracks: Track[], handoffs: Checkin[]) {
+  const seen = new Set<number>();
+  const points = rawTracks
+    .flatMap((track) =>
+      track.M.flatMap((m) =>
+        m.A.flatMap((a) =>
+          a.Locations.map((location) => {
+            if (seen.has(location.M)) {
+              return null;
+            } else {
+              seen.add(location.M);
+              const datetime = new Date(location.D);
+              const person = getActivePerson(handoffs, datetime);
+              return point(
+                [location.N, location.L],
+                {
+                  person,
+                  datetime,
+                },
+                { id: location.M }
+              );
+            }
+          })
+        )
+      )
     )
+    .filter((value) => !!value);
+  points.sort(
+    (a, b) => a.properties.datetime.getTime() - b.properties.datetime.getTime()
   );
-  points.sort((a, b) => +a.properties.datetime - +b.properties.datetime);
   return points;
 }
 
@@ -100,25 +113,21 @@ function getHandoffPoints(
   const handoffPoints: Feature<Point, Checkin>[] = [];
   let handoffIndex = 0;
   for (let index = 0; index < track.length - 1; index++) {
-    if (handoffIndex >= handoffs.length) {
-      break;
-    }
-    const handoff = handoffs[handoffIndex];
+    const handoff = handoffs.at(handoffIndex);
     const a = track[index];
     const b = track[index + 1];
 
-    if (handoff.datetime < a.properties.datetime) {
+    if (handoff && handoff.datetime < a.properties.datetime) {
       handoffPoints.push(a);
       handoffIndex += 1;
     } else if (
       a.properties.datetime.getDay() != b.properties.datetime.getDay()
     ) {
-      // TODO
       const midnight = new Date(b.properties.datetime);
       midnight.setHours(0, 0, 0, 0);
       const p = interpolate(a, b, midnight);
       handoffPoints.push(point(p.geometry.coordinates, a.properties));
-    } else if (handoff.datetime <= b.properties.datetime) {
+    } else if (handoff && handoff.datetime <= b.properties.datetime) {
       const p = interpolate(a, b, handoff.datetime);
       handoffPoints.push(point(p.geometry.coordinates, handoff));
       handoffIndex += 1;

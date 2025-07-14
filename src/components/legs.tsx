@@ -5,9 +5,11 @@ import usePersonColors from "../hooks/person-colors";
 
 export default function Legs() {
   const { legs } = useAppState();
+
   return (
     <Source data={featureCollection(legs)} type="geojson" id="legs-source">
       <Layer
+        id="legs"
         type="line"
         layout={{ "line-cap": "butt", "line-join": "round" }}
         paint={{

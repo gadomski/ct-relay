@@ -75,13 +75,15 @@ function Mileage() {
     legs.reduce((n, leg) => n + length(leg, units), 0).toFixed(0)
   );
   const total = Number(length(feature(coloradoTrail), units).toFixed(0));
-  const startMidnight = track[0].properties.datetime.setHours(0, 0, 0, 0);
-  const endMidnight = track[track.length - 1].properties.datetime.setHours(
+  const startMidnight = new Date(track[0].properties.datetime).setHours(
     0,
     0,
     0,
     0
   );
+  const endMidnight = new Date(
+    track[track.length - 1].properties.datetime
+  ).setHours(0, 0, 0, 0);
   const days = dayjs(endMidnight).diff(startMidnight, "day");
   const bex = new Array(days + 1).fill(0);
   const kelly = new Array(days + 1).fill(0);
@@ -121,10 +123,12 @@ function Mileage() {
 
       <Table.Root>
         <Table.Header>
-          <Table.ColumnHeader>Day</Table.ColumnHeader>
-          <Table.ColumnHeader>Bex 🚴‍♀️</Table.ColumnHeader>
-          <Table.ColumnHeader>Kelly 🏃‍♀️</Table.ColumnHeader>
-          <Table.ColumnHeader>Total</Table.ColumnHeader>
+          <Table.Row>
+            <Table.ColumnHeader>Day</Table.ColumnHeader>
+            <Table.ColumnHeader>Bex 🚴‍♀️</Table.ColumnHeader>
+            <Table.ColumnHeader>Kelly 🏃‍♀️</Table.ColumnHeader>
+            <Table.ColumnHeader>Total</Table.ColumnHeader>
+          </Table.Row>
         </Table.Header>
         <Table.Body>
           {perDay.map((_, i) => {
