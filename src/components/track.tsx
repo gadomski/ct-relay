@@ -9,7 +9,7 @@ import { PERSON_COLORS } from "./colors";
 import { PersonAvatar } from "./person";
 
 export default function Track() {
-  const { track } = useAppState();
+  const { track, showTrack } = useAppState();
   const map = useMap();
   const [hover, setHover] = useState<string | number>();
   const [click, setClick] = useState<Feature<Point, Checkin>>();
@@ -42,10 +42,18 @@ export default function Track() {
 
   return (
     <>
-      <Source type="geojson" id="track-source" data={featureCollection(track)}>
+      <Source
+        type="geojson"
+        id="track-source"
+        data={featureCollection(track)}
+        cluster={true}
+      >
         <Layer
           type="circle"
           id="track"
+          layout={{
+            visibility: showTrack ? "visible" : "none",
+          }}
           paint={{
             "circle-color": PERSON_COLORS,
             "circle-radius": [
