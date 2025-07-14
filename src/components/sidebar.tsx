@@ -136,18 +136,26 @@ function Mileage() {
               <Table.Row key={"day-" + i}>
                 <Table.Cell>{i + 1}</Table.Cell>
                 <Table.Cell color={BEX_SOLID} fontWeight={"bold"}>
-                  <FormatNumber
-                    value={bex[i]}
-                    style="unit"
-                    unit="mile"
-                  ></FormatNumber>
+                  {bex[i] == 0 ? (
+                    "—"
+                  ) : (
+                    <FormatNumber
+                      value={bex[i]}
+                      style="unit"
+                      unit="mile"
+                    ></FormatNumber>
+                  )}
                 </Table.Cell>
                 <Table.Cell color={KELLY_SOLID} fontWeight={"bold"}>
-                  <FormatNumber
-                    value={kelly[i]}
-                    style="unit"
-                    unit="mile"
-                  ></FormatNumber>
+                  {kelly[i] == 0 ? (
+                    "—"
+                  ) : (
+                    <FormatNumber
+                      value={kelly[i]}
+                      style="unit"
+                      unit="mile"
+                    ></FormatNumber>
+                  )}
                 </Table.Cell>
                 <Table.Cell>
                   <FormatNumber
