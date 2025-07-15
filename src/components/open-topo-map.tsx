@@ -12,10 +12,14 @@ export default function OpenTopoMap() {
         "https://b.tile.opentopomap.org/{z}/{x}/{y}.png",
         "https://c.tile.opentopomap.org/{z}/{x}/{y}.png",
       ]}
-      attribution={"OpenTopoMap"}
+      attribution={
+        "<a href='https://wiki.openstreetmap.org/wiki/OpenTopoMap' target='_blank'>OpenTopoMap</a>"
+      }
     >
       <Layer
         type="raster"
+        id="open-topo-map"
+        beforeId="colorado-trail-buffer"
         layout={{ visibility: showOpenTopoMap ? "visible" : "none" }}
       ></Layer>
     </Source>

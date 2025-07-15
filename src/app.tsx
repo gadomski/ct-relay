@@ -3,6 +3,7 @@ import {
   along,
   distance,
   feature,
+  length,
   lineSlice,
   point,
   shortestPath,
@@ -17,6 +18,7 @@ import rawHandoffs from "./data/handoffs.json";
 import day_1 from "./data/tracks/2025-07-12.json";
 import day_2 from "./data/tracks/2025-07-13.json";
 import day_3 from "./data/tracks/2025-07-14.json";
+import day_4 from "./data/tracks/2025-07-15.json";
 import type { Checkin, Person } from "./types/ct-relay";
 import type { Track } from "./types/garmin";
 
@@ -24,7 +26,7 @@ export default function App() {
   const coloradoTrail = (rawColoradoTrail as FeatureCollection<LineString>)
     .features[0].geometry;
   const handoffs = getHandoffs(rawHandoffs);
-  const track = getTrack([day_1, day_2, day_3], handoffs);
+  const track = getTrack([day_1, day_2, day_3, day_4], handoffs);
   const handoffPoints = getHandoffPoints(track, handoffs);
   const legs = getLegs(coloradoTrail, handoffPoints, track[track.length - 1]);
   const [showTrack, setShowTrack] = useState(false);
@@ -45,13 +47,8 @@ export default function App() {
         setShowOpenTopoMap,
       }}
     >
-      <SimpleGrid columns={{ base: 1, md: 3 }} h={"100dvh"}>
-        <GridItem
-          shadow={"inset"}
-          hideBelow={"md"}
-          h={"100%"}
-          overflow={"scroll"}
-        >
+      <SimpleGrid columns={{ base: 1, md: 3 }}>
+        <GridItem shadow={"inset"} hideBelow={"md"}>
           <Info></Info>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -75,7 +72,7 @@ function getTrack(rawTracks: Track[], handoffs: Checkin[]) {
       track.M.flatMap((m) =>
         m.A.flatMap((a) =>
           a.Locations.map((location) => {
-            if (seen.has(location.M)) {
+            if (!location.M || seen.has(location.M)) {
               return null;
             } else {
               seen.add(location.M);
@@ -152,11 +149,19 @@ function getLegs(
     const a = handoffPoints[index];
     const b =
       index + 1 == handoffPoints.length ? lastSeen : handoffPoints[index + 1];
+    const startDistance = length(
+      lineSlice(coloradoTrail.coordinates[0], a, coloradoTrail),
+      { units: "miles" }
+    );
+    const slice = lineSlice(a, b, coloradoTrail);
+    const endDistance = startDistance + length(slice, { units: "miles" });
     legs.push(
-      feature(lineSlice(a, b, coloradoTrail).geometry, {
+      feature(slice.geometry, {
         person: a.properties.person,
         startDatetime: a.properties.datetime,
         endDatetime: b.properties.datetime,
+        startDistance,
+        endDistance,
       })
     );
   }
