@@ -19,16 +19,10 @@ export default function Trail({
   useEffect(() => {
     if (map.current) {
       map.current.on("mouseenter", "legs", (e) => {
-        if (map.current) {
-          map.current.getCanvas().style.cursor = "pointer";
-        }
         setHoveredLeg(e.features && Number(e.features[0].id));
       });
 
       map.current.on("mouseleave", "legs", () => {
-        if (map.current) {
-          map.current.getCanvas().style.cursor = "";
-        }
         setHoveredLeg(undefined);
       });
     }
