@@ -61,6 +61,7 @@ export default function Map({
           },
         }}
         mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
+        interactiveLayerIds={["legs"]}
       >
         {coloradoTrail && legs && segments && track && (
           <>

@@ -78,15 +78,20 @@ function useLegs(
       let person = handoffs[0].person;
       let handoffIndex = 1;
       let day = 1;
+      let id = 0;
       const makeLeg = (endPosition: Feature<Point>) => {
         const l = getGeom(lineSlice(startPosition, endPosition, coloradoTrail));
         l.coordinates[0][2] = startPosition.geometry.coordinates[2];
         l.coordinates[l.coordinates.length - 1][2] =
           endPosition.geometry.coordinates[2];
-        return feature(l, {
-          person,
-          day,
-        });
+        return feature(
+          l,
+          {
+            person,
+            day,
+          },
+          { id: id++ }
+        );
       };
       for (let index = 0; index < track.length; index++) {
         const trackPoint = track[index];
