@@ -81,6 +81,13 @@ export default function Progress({
           ))}
         </Table.Body>
       </Table.Root>
+
+      <Text fontSize={"xs"} fontWeight={"light"} fontStyle={"italic"}>
+        These mileages are derived from infrequently-collected (~30 minute) GPS
+        points and are often incorrect. Because we measure mileage along the
+        trail, rather than point-to-point, by the end of the relay the errors
+        should average out.
+      </Text>
     </Stack>
   );
 }
