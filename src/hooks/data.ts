@@ -144,7 +144,7 @@ function useDataFetch<T>(path: string) {
   const { data } = useQuery<T>({
     queryKey: [path],
     queryFn: async () => {
-      return await fetch(new URL("../data/" + path, import.meta.url).href).then(
+      return await fetch(import.meta.env.BASE_URL + "/" + path).then(
         (response) => {
           if (response.ok) {
             return response.json();
