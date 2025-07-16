@@ -1,9 +1,10 @@
 import { Layer, Source } from "react-map-gl/maplibre";
-import useAppState from "../hooks/app-state";
 
-export default function OpenTopoMap() {
-  const { showOpenTopoMap } = useAppState();
-
+export default function OpenTopoMap({
+  showOpenTopoMap,
+}: {
+  showOpenTopoMap: boolean;
+}) {
   return (
     <Source
       type="raster"
@@ -19,7 +20,6 @@ export default function OpenTopoMap() {
       <Layer
         type="raster"
         id="open-topo-map"
-        beforeId="colorado-trail-buffer"
         layout={{ visibility: showOpenTopoMap ? "visible" : "none" }}
       ></Layer>
     </Source>

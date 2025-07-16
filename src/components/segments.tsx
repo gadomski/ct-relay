@@ -1,53 +1,56 @@
 import { featureCollection, point } from "@turf/turf";
 import type { FeatureCollection, LineString } from "geojson";
 import { Layer, Source } from "react-map-gl/maplibre";
-import data from "../data/colorado-trail-segments.json";
-import useAppState from "../hooks/app-state";
-import { useColorModeValue } from "./ui/color-mode";
+import useColors from "../hooks/colors";
 
-export default function Segments() {
-  const { showSegments } = useAppState();
-  const points = (
-    data as FeatureCollection<LineString, { segment: number }>
-  ).features.map((feature) =>
-    point(
-      feature.geometry.coordinates[
-        // Hack to deal with five being backwards
-        feature.properties.segment == 5
-          ? 0
-          : feature.geometry.coordinates.length - 1
-      ],
-      { segment: feature.properties.segment }
-    )
-  );
-  const primaryColor = useColorModeValue("black", "white");
-  const secondaryColor = useColorModeValue("white", "black");
+export default function Segments({
+  segments,
+  showSegments,
+}: {
+  segments: FeatureCollection<LineString>;
+  showSegments: boolean;
+}) {
+  const { primaryColor, secondaryColor } = useColors();
+  const layout: { visibility: "visible" | "none" | undefined } = {
+    visibility: showSegments ? "visible" : "none",
+  };
 
   return (
     <Source
-      type="geojson"
-      data={featureCollection(points)}
       id="segments-source"
+      type="geojson"
+      data={featureCollection(
+        segments.features.map((segment) =>
+          point(
+            segment.geometry.coordinates[
+              segment.properties?.segment == 5
+                ? 0
+                : segment.geometry.coordinates.length - 1
+            ],
+            segment.properties
+          )
+        )
+      )}
     >
       <Layer
-        id="segment-ends"
+        id="segment-end-outer"
         type="circle"
-        layout={{ visibility: showSegments ? "visible" : "none" }}
-        paint={{ "circle-color": primaryColor, "circle-radius": 10 }}
+        layout={layout}
+        paint={{ "circle-radius": 10, "circle-color": primaryColor }}
       ></Layer>
       <Layer
-        id="segment-ends-inner"
+        id="segment-end-inner"
         type="circle"
-        layout={{ visibility: showSegments ? "visible" : "none" }}
-        paint={{ "circle-color": secondaryColor, "circle-radius": 8 }}
+        layout={layout}
+        paint={{ "circle-radius": 8, "circle-color": secondaryColor }}
       ></Layer>
       <Layer
-        id="segment-numbers"
+        id="segment-end-number"
         type="symbol"
         layout={{
+          ...layout,
           "text-field": ["get", "segment"],
           "text-size": 10,
-          visibility: showSegments ? "visible" : "none",
         }}
         paint={{ "text-color": primaryColor }}
       ></Layer>

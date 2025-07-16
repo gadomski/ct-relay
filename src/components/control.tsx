@@ -3,92 +3,78 @@ import {
   ButtonGroup,
   Checkbox,
   Drawer,
-  HStack,
+  Flex,
   IconButton,
   Stack,
 } from "@chakra-ui/react";
-import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useState } from "react";
+import type { Feature, LineString } from "geojson";
+import { useState } from "react";
 import { LuExternalLink, LuInfo, LuRadio } from "react-icons/lu";
-import useAppState from "../hooks/app-state";
+import type { Legs, Track } from "../types/ct-relay";
 import Info from "./info";
-import "./map.css";
 import { ColorModeButton } from "./ui/color-mode";
 
-export default function Control() {
-  const {
-    showTrack,
-    setShowTrack,
-    showSegments,
-    setShowSegments,
-    showOpenTopoMap,
-    setShowOpenTopoMap,
-  } = useAppState();
+export default function Control({
+  showSegments,
+  setShowSegments,
+  showTrack,
+  setShowTrack,
+  showOpenTopoMap,
+  setShowOpenTopoMap,
+  coloradoTrail,
+  legs,
+  track,
+}: {
+  showSegments: boolean;
+  setShowSegments: (showSegments: boolean) => void;
+  showTrack: boolean;
+  setShowTrack: (showTrack: boolean) => void;
+  showOpenTopoMap: boolean;
+  setShowOpenTopoMap: (showOpenTopoMap: boolean) => void;
+  coloradoTrail: Feature<LineString> | undefined;
+  legs: Legs | undefined;
+  track: Track | undefined;
+}) {
   const [showInfo, setShowInfo] = useState(false);
-  const [segmentsChecked, setSegmentsChecked] = useState(showSegments);
-  const [trackChecked, setTrackChecked] = useState(showTrack);
-  const [openTopoMapChecked, setOpenTopoMapChecked] = useState(showOpenTopoMap);
-
-  useEffect(() => {
-    setShowSegments(segmentsChecked);
-  }, [segmentsChecked, setShowSegments]);
-
-  useEffect(() => {
-    setShowTrack(trackChecked);
-  }, [trackChecked, setShowTrack]);
-
-  useEffect(() => {
-    setShowOpenTopoMap(openTopoMapChecked);
-  }, [openTopoMapChecked, setShowOpenTopoMap]);
 
   return (
-    <>
+    <Flex>
       <Stack
-        position={"absolute"}
-        top={0}
-        left={0}
-        margin={4}
-        background={"bg.panel"}
+        p={4}
+        bg={"bg.panel"}
         boxShadow={"md"}
-        rounded={4}
-        px={4}
-        pb={2}
-        pt={4}
+        pointerEvents={"auto"}
         gap={4}
       >
-        <Checkbox.Root
-          variant={"subtle"}
-          checked={segmentsChecked}
-          onCheckedChange={(e) => setSegmentsChecked(!!e.checked)}
-        >
-          <Checkbox.HiddenInput></Checkbox.HiddenInput>
-          <Checkbox.Control></Checkbox.Control>
-          <Checkbox.Label>
-            <HStack>Show segments</HStack>
-          </Checkbox.Label>
-        </Checkbox.Root>
-        <Checkbox.Root
-          variant={"subtle"}
-          checked={trackChecked}
-          onCheckedChange={(e) => setTrackChecked(!!e.checked)}
-        >
-          <Checkbox.HiddenInput></Checkbox.HiddenInput>
-          <Checkbox.Control></Checkbox.Control>
-          <Checkbox.Label>
-            <HStack>Show track</HStack>
-          </Checkbox.Label>
-        </Checkbox.Root>
-        <Checkbox.Root
-          variant={"subtle"}
-          checked={openTopoMapChecked}
-          onCheckedChange={(e) => setOpenTopoMapChecked(!!e.checked)}
-        >
-          <Checkbox.HiddenInput></Checkbox.HiddenInput>
-          <Checkbox.Control></Checkbox.Control>
-          <Checkbox.Label>
-            <HStack>Show OpenTopoMap</HStack>
-          </Checkbox.Label>
-        </Checkbox.Root>
+        <Stack>
+          <Checkbox.Root
+            variant={"subtle"}
+            checked={showSegments}
+            onCheckedChange={(e) => setShowSegments(!!e.checked)}
+          >
+            <Checkbox.HiddenInput></Checkbox.HiddenInput>
+            <Checkbox.Control></Checkbox.Control>
+            <Checkbox.Label>Show segments</Checkbox.Label>
+          </Checkbox.Root>
+          <Checkbox.Root
+            variant={"subtle"}
+            checked={showTrack}
+            onCheckedChange={(e) => setShowTrack(!!e.checked)}
+          >
+            <Checkbox.HiddenInput></Checkbox.HiddenInput>
+            <Checkbox.Control></Checkbox.Control>
+            <Checkbox.Label>Show track</Checkbox.Label>
+          </Checkbox.Root>
+          <Checkbox.Root
+            variant={"subtle"}
+            checked={showOpenTopoMap}
+            onCheckedChange={(e) => setShowOpenTopoMap(!!e.checked)}
+          >
+            <Checkbox.HiddenInput></Checkbox.HiddenInput>
+            <Checkbox.Control></Checkbox.Control>
+            <Checkbox.Label>Show OpenTopoMap</Checkbox.Label>
+          </Checkbox.Root>
+        </Stack>
         <ButtonGroup variant={"subtle"} size={"sm"}>
           <Button asChild>
             <a href="https://share.garmin.com/JOYQV" target="_blank">
@@ -109,11 +95,15 @@ export default function Control() {
         <Drawer.Positioner>
           <Drawer.Content>
             <Drawer.Body>
-              <Info></Info>
+              <Info
+                coloradoTrail={coloradoTrail}
+                legs={legs}
+                track={track}
+              ></Info>
             </Drawer.Body>
           </Drawer.Content>
         </Drawer.Positioner>
       </Drawer.Root>
-    </>
+    </Flex>
   );
 }

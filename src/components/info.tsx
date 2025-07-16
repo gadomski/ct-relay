@@ -2,11 +2,14 @@ import {
   Blockquote,
   Heading,
   Highlight,
+  SkeletonText,
   Span,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import Mileage from "./mileage";
+import type { Feature, LineString } from "geojson";
+import type { Legs, Track } from "../types/ct-relay";
+import Progress from "./progress";
 
 const KELLY = {
   fontWeight: "bold",
@@ -20,19 +23,27 @@ const BEX = {
   color: "green.fg",
 };
 
-export default function Info() {
+export default function Info({
+  coloradoTrail,
+  legs,
+  track,
+}: {
+  coloradoTrail: Feature<LineString> | undefined;
+  legs: Legs | undefined;
+  track: Track | undefined;
+}) {
   return (
-    <Stack px={4} pt={6} gap={8} h={"100dvh"}>
+    <Stack px={4} pt={6} gap={8}>
       <Stack>
         <Heading>
           <Span p="1" {...BEX}>
-            Bex 🚴‍♀️
+            Bex 🚵‍♀️
           </Span>{" "}
           and{" "}
           <Span p="1" {...KELLY}>
             Kelly 🏃‍♀️
           </Span>{" "}
-          relay the <abbr title="Colorado Trail">CT</abbr>
+          relay the <abbr title="Colorado Trail">CT</abbr> 🏔️
         </Heading>
         <Text fontWeight={"lighter"} fontSize={"sm"}>
           Summer 2025
@@ -58,7 +69,19 @@ export default function Info() {
         </Blockquote.Root>
       </Stack>
 
-      <Mileage></Mileage>
+      {(coloradoTrail && legs && track && (
+        <Progress
+          coloradoTrail={coloradoTrail}
+          track={track}
+          legs={legs}
+        ></Progress>
+      )) || (
+        <SkeletonText
+          noOfLines={10}
+          gap={4}
+          loading={!coloradoTrail || !legs || !track}
+        ></SkeletonText>
+      )}
     </Stack>
   );
 }
