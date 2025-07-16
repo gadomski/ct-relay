@@ -37,6 +37,7 @@ export default function Progress({
     }
   });
 
+  let cumulativeMiles = 0;
   return (
     <Stack>
       <Text>
@@ -71,7 +72,7 @@ export default function Progress({
               </Table.Cell>
               <Table.Cell>
                 <FormatNumber
-                  value={total}
+                  value={(cumulativeMiles += total)}
                   unit="mile"
                   style="unit"
                 ></FormatNumber>
