@@ -16,43 +16,79 @@ export default function Segments({
   };
 
   return (
-    <Source
-      id="segments-source"
-      type="geojson"
-      data={featureCollection(
-        segments.features.map((segment) =>
-          point(
-            segment.geometry.coordinates[
-              segment.geometry.coordinates.length - 1
-            ],
-            segment.properties,
-            { id: segment.id }
+    <>
+      <Source
+        id="segment-start-source"
+        type="geojson"
+        data={featureCollection(
+          segments.features.map((segment) =>
+            point(segment.geometry.coordinates[2], segment.properties, {
+              id: segment.id,
+            })
           )
-        )
-      )}
-    >
-      <Layer
-        id="segment-end-outer"
-        type="circle"
-        layout={layout}
-        paint={{ "circle-radius": 10, "circle-color": primaryColor }}
-      ></Layer>
-      <Layer
-        id="segment-end-inner"
-        type="circle"
-        layout={layout}
-        paint={{ "circle-radius": 8, "circle-color": secondaryColor }}
-      ></Layer>
-      <Layer
-        id="segment-end-number"
-        type="symbol"
-        layout={{
-          ...layout,
-          "text-field": ["id"],
-          "text-size": 10,
-        }}
-        paint={{ "text-color": primaryColor }}
-      ></Layer>
-    </Source>
+        )}
+      >
+        <Layer
+          id="segment-start-outer"
+          type="circle"
+          layout={layout}
+          paint={{ "circle-radius": 10, "circle-color": primaryColor }}
+        ></Layer>
+        <Layer
+          id="segment-start-inner"
+          type="circle"
+          layout={layout}
+          paint={{ "circle-radius": 8, "circle-color": secondaryColor }}
+        ></Layer>
+        <Layer
+          id="segment-start-number"
+          type="symbol"
+          layout={{
+            ...layout,
+            "text-field": ["id"],
+            "text-size": 10,
+          }}
+          paint={{ "text-color": primaryColor }}
+        ></Layer>
+      </Source>
+      <Source
+        id="segment-end-source"
+        type="geojson"
+        data={featureCollection(
+          segments.features.map((segment) =>
+            point(
+              segment.geometry.coordinates[
+                segment.geometry.coordinates.length - 3
+              ],
+              segment.properties,
+              { id: segment.id }
+            )
+          )
+        )}
+      >
+        <Layer
+          id="segment-end-outer"
+          type="circle"
+          layout={layout}
+          paint={{ "circle-radius": 10, "circle-color": primaryColor }}
+        ></Layer>
+        <Layer
+          id="segment-end-inner"
+          type="circle"
+          layout={layout}
+          paint={{ "circle-radius": 8, "circle-color": secondaryColor }}
+        ></Layer>
+        <Layer
+          id="segment-end-number"
+          type="symbol"
+          layout={{
+            ...layout,
+            "text-field": ["id"],
+            "text-size": 10,
+          }}
+          paint={{ "text-color": primaryColor }}
+        ></Layer>
+      </Source>
+    </>
   );
 }
