@@ -23,11 +23,10 @@ export default function Segments({
         segments.features.map((segment) =>
           point(
             segment.geometry.coordinates[
-              segment.properties?.segment == 5
-                ? 0
-                : segment.geometry.coordinates.length - 1
+              segment.geometry.coordinates.length - 1
             ],
-            segment.properties
+            segment.properties,
+            { id: segment.id }
           )
         )
       )}
@@ -49,7 +48,7 @@ export default function Segments({
         type="symbol"
         layout={{
           ...layout,
-          "text-field": ["get", "segment"],
+          "text-field": ["id"],
           "text-size": 10,
         }}
         paint={{ "text-color": primaryColor }}

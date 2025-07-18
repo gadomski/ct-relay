@@ -1,7 +1,6 @@
 import { featureCollection } from "@turf/turf";
 import type { Feature, LineString } from "geojson";
-import { useEffect, useState } from "react";
-import { Layer, Source, useMap } from "react-map-gl/maplibre";
+import { Layer, Source } from "react-map-gl/maplibre";
 import useColors, { MAPLIBRE_PERSON_COLOR } from "../hooks/colors";
 import type { Legs } from "../types/ct-relay";
 
@@ -13,20 +12,6 @@ export default function Trail({
   legs: Legs;
 }) {
   const { primaryColor, secondaryColor } = useColors();
-  const [hoveredLeg, setHoveredLeg] = useState<number>();
-  const map = useMap();
-
-  useEffect(() => {
-    if (map.current) {
-      map.current.on("mouseenter", "legs", (e) => {
-        setHoveredLeg(e.features && Number(e.features[0].id));
-      });
-
-      map.current.on("mouseleave", "legs", () => {
-        setHoveredLeg(undefined);
-      });
-    }
-  }, [map]);
 
   return (
     <>
@@ -48,12 +33,7 @@ export default function Trail({
           type="line"
           beforeId="colorado-trail"
           paint={{
-            "line-width": [
-              "case",
-              ["==", ["to-number", ["id"]], hoveredLeg || -1],
-              10,
-              6,
-            ],
+            "line-width": 6,
             "line-color": MAPLIBRE_PERSON_COLOR,
           }}
         ></Layer>
