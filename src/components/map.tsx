@@ -10,6 +10,7 @@ import {
 } from "react-map-gl/maplibre";
 import type { Legs, Track as TrackType } from "../types/ct-relay";
 import Control from "./control";
+import "./map.css";
 import OpenTopoMap from "./open-topo-map";
 import Segments from "./segments";
 import Track from "./track";
@@ -61,7 +62,7 @@ export default function Map({
           },
         }}
         mapStyle={`https://basemaps.cartocdn.com/gl/${mapStyle}/style.json`}
-        interactiveLayerIds={["legs"]}
+        interactiveLayerIds={["segment-end-outer", "segment-start-outer"]}
       >
         {coloradoTrail && legs && segments && track && (
           <>
