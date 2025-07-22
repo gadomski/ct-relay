@@ -38,6 +38,7 @@ function useTrack() {
   const day_8 = useDataFetch<GarminTrack>("tracks/2025-07-19.json");
   const day_9 = useDataFetch<GarminTrack>("tracks/2025-07-20.json");
   const day_10 = useDataFetch<GarminTrack>("tracks/2025-07-21.json");
+  const day_11 = useDataFetch<GarminTrack>("tracks/2025-07-22.json");
 
   useEffect(() => {
     if (
@@ -50,7 +51,8 @@ function useTrack() {
       day_7 &&
       day_8 &&
       day_9 &&
-      day_10
+      day_10 &&
+      day_11
     ) {
       const seen = new Set();
       const track = [
@@ -64,6 +66,7 @@ function useTrack() {
         ...day_8.M,
         ...day_9.M,
         ...day_10.M,
+        ...day_11.M,
       ]
         .flatMap((message) =>
           message.A.flatMap((payload) =>
@@ -83,7 +86,19 @@ function useTrack() {
       track.sort((a, b) => +a.properties.datetime - +b.properties.datetime);
       setTrack(track);
     }
-  }, [day_1, day_2, day_3, day_4, day_5, day_6, day_7, day_8, day_9, day_10]);
+  }, [
+    day_1,
+    day_2,
+    day_3,
+    day_4,
+    day_5,
+    day_6,
+    day_7,
+    day_8,
+    day_9,
+    day_10,
+    day_11,
+  ]);
 
   return track;
 }
