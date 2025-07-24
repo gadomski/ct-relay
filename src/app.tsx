@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <SimpleGrid columns={{ base: 1, md: 3 }} h={"100dvh"}>
-      <GridItem shadow={"inset"} hideBelow={"md"}>
+      <GridItem shadow={"inset"} hideBelow={"md"} overflow={"scroll"} pb={4}>
         <Info coloradoTrail={coloradoTrail} legs={legs} track={track}></Info>
       </GridItem>
       <GridItem colSpan={{ base: 1, md: 2 }}>
