@@ -1,6 +1,6 @@
 # A Colorado Trail relay
 
-Brought to you by Bex 🚵‍♀️ Kelly 🏃‍♀️.
+Brought to you by Bex 🚵‍♀️ and Kelly 🏃‍♀️.
 
 ## Updating the track
 
