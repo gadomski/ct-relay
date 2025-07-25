@@ -32,8 +32,9 @@ export default function Trail({
           id="legs"
           type="line"
           beforeId="colorado-trail"
+          layout={{ "line-join": "round", "line-cap": "round" }}
           paint={{
-            "line-width": 6,
+            "line-width": 12,
             "line-color": MAPLIBRE_PERSON_COLOR,
           }}
         ></Layer>

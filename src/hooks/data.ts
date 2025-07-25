@@ -40,6 +40,7 @@ function useTrack() {
   const day_10 = useDataFetch<GarminTrack>("tracks/2025-07-21.json");
   const day_11 = useDataFetch<GarminTrack>("tracks/2025-07-22.json");
   const day_12 = useDataFetch<GarminTrack>("tracks/2025-07-23.json");
+  const day_13 = useDataFetch<GarminTrack>("tracks/2025-07-24.json");
 
   useEffect(() => {
     if (
@@ -54,7 +55,8 @@ function useTrack() {
       day_9 &&
       day_10 &&
       day_11 &&
-      day_12
+      day_12 &&
+      day_13
     ) {
       const seen = new Set();
       const track = [
@@ -70,6 +72,7 @@ function useTrack() {
         ...day_10.M,
         ...day_11.M,
         ...day_12.M,
+        ...day_13.M,
       ]
         .flatMap((message) =>
           message.A.flatMap((payload) =>
@@ -102,6 +105,7 @@ function useTrack() {
     day_10,
     day_11,
     day_12,
+    day_13,
   ]);
 
   return track;
