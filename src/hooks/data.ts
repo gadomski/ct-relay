@@ -10,8 +10,47 @@ import {
 } from "@turf/turf";
 import type { Feature, FeatureCollection, LineString, Point } from "geojson";
 import { useEffect, useState } from "react";
-import type { Handoff, Legs, Track } from "../types/ct-relay";
+import type { Legs, Track } from "../types/ct-relay";
 import type { Track as GarminTrack } from "../types/garmin";
+
+const rawHandoffs = [
+  {
+    datetime: "2025-07-12T05:00:00-0600",
+    person: "Bex",
+  },
+  {
+    datetime: "2025-07-12T14:00:00-0600",
+    person: "Kelly",
+  },
+  {
+    datetime: "2025-07-13T11:24:45-0600",
+    person: "Bex",
+  },
+  {
+    datetime: "2025-07-15T13:28:30-0600",
+    person: "Kelly",
+  },
+  {
+    datetime: "2025-07-17T00:00:00-0600",
+    person: "Bex",
+  },
+  {
+    datetime: "2025-07-18T00:00:00-0600",
+    person: "Kelly",
+  },
+  {
+    datetime: "2025-07-19T09:04:00-0600",
+    person: "Bex",
+  },
+  {
+    datetime: "2025-07-22T00:00:00-0600",
+    person: "Kelly",
+  },
+  {
+    datetime: "2025-07-24T00:00:00-0600",
+    person: "Bex",
+  },
+];
 
 export default function useData() {
   const coloradoTrail = useColoradoTrail();
@@ -116,7 +155,6 @@ function useLegs(
   track: Track | undefined
 ) {
   const [legs, setLegs] = useState<Legs>();
-  const rawHandoffs = useDataFetch<Handoff[]>("handoffs.json");
 
   useEffect(() => {
     if (rawHandoffs && coloradoTrail && track) {
@@ -185,7 +223,7 @@ function useLegs(
       }
       setLegs(legs);
     }
-  }, [rawHandoffs, coloradoTrail, track]);
+  }, [coloradoTrail, track]);
 
   return legs;
 }
