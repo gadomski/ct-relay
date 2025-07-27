@@ -50,6 +50,14 @@ const rawHandoffs = [
     datetime: "2025-07-24T00:00:00-0600",
     person: "Bex",
   },
+  {
+    datetime: "2025-07-25T00:00:00-0600",
+    person: "Kelly",
+  },
+  {
+    datetime: "2025-07-26T00:00:00-0600",
+    person: "Bex",
+  },
 ];
 
 export default function useData() {
@@ -80,6 +88,8 @@ function useTrack() {
   const day_11 = useDataFetch<GarminTrack>("tracks/2025-07-22.json");
   const day_12 = useDataFetch<GarminTrack>("tracks/2025-07-23.json");
   const day_13 = useDataFetch<GarminTrack>("tracks/2025-07-24.json");
+  const day_14 = useDataFetch<GarminTrack>("tracks/2025-07-25.json");
+  const day_15 = useDataFetch<GarminTrack>("tracks/2025-07-26.json");
 
   useEffect(() => {
     if (
@@ -95,7 +105,9 @@ function useTrack() {
       day_10 &&
       day_11 &&
       day_12 &&
-      day_13
+      day_13 &&
+      day_14 &&
+      day_15
     ) {
       const seen = new Set();
       const track = [
@@ -112,6 +124,8 @@ function useTrack() {
         ...day_11.M,
         ...day_12.M,
         ...day_13.M,
+        ...day_14.M,
+        ...day_15.M,
       ]
         .flatMap((message) =>
           message.A.flatMap((payload) =>
@@ -145,6 +159,8 @@ function useTrack() {
     day_11,
     day_12,
     day_13,
+    day_14,
+    day_15,
   ]);
 
   return track;
