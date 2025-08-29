@@ -51,13 +51,13 @@ export default function Info({
         <Blockquote.Root>
           <Blockquote.Content>
             <Highlight query={"Kelly"} styles={KELLY}>
-              The Colorado trail is 490 miles (From Denver to Durango) with
-              89,000' of elevation gain. The route also traverses six wilderness
-              areas. Just before and after each of these wilderness areas is
-              where Kelly and I will exchange our baton and she will run through
-              those sections, as those zones do not allow any wheels on the
-              ground! The wilderness sections are especially beautiful and
-              rugged!
+              The Colorado trail is 486 miles (From Denver to Durango) with
+              89,000' of elevation gain. The route also traverses five
+              wilderness areas. Just before and after each of these wilderness
+              areas is where Kelly and I will exchange our baton and she will
+              run through those sections, as those zones do not allow any wheels
+              on the ground! The wilderness sections are especially beautiful
+              and rugged!
             </Highlight>
           </Blockquote.Content>
           <Blockquote.Caption>
